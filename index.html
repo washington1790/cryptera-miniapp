@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CryptEra</title>
+  <meta name="description" content="New era of crypto in Telegram">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root {
+      --bg: #1C1C1E;
+      --text: #FFFFFF;
+      --card: #2C2C2E;
+      --accent: #0A84FF;
+      --radius: 16px;
+      --font: -apple-system, 'San Francisco', 'SF Pro Text', sans-serif;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #F2F2F7;
+        --text: #000000;
+        --card: #FFFFFF;
+      }
+    }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      font-weight: 400;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    header h1 {
+      font-size: 28px;
+      font-weight: 600;
+    }
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: var(--radius);
+      width: 100%;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🚀 CryptEra</h1>
+      <p>Новая эра крипты в Telegram</p>
+    </header>
+
+    <div class="card">
+      <h2>Добро пожаловать!</h2>
+      <p>Это стартовая страница вашего Mini App.</p>
+      <button onclick="alert('Работает 🎉')">Нажми меня</button>
+    </div>
+
+    <div class="card">
+      <h3>Что дальше?</h3>
+      <p>1. Запустите сервер</p>
+      <p>2. Откройте http://localhost:8080</p>
+      <p>3. Тестируйте в браузере</p>
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+  </script>
+</body>
+</html>
