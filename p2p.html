@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>P2P</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body { font-family: -apple-system, sans-serif; background: #1C1C1E; color: #FFF; margin: 20px; }
+    .container { max-width: 500px; margin: 0 auto; }
+    input, button, select {
+      width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: none; font-size: 16px;
+    }
+    input, select { background: #2C2C2E; color: #FFF; }
+    button { background: #0A84FF; color: white; font-weight: 600; }
+    .ad {
+      background: #2C2C2E;
+      padding: 16px;
+      border-radius: 12px;
+      margin: 10px 0;
+      border-left: 4px solid #30D158;
+    }
+    .ad.sell { border-left-color: #FF453A; }
+    .ad-header { font-weight: 600; margin-bottom: 6px; }
+    .ad-price { color: #FFD700; }
+    .actions button {
+      padding: 8px; margin: 5px 0; background: #3A3A3C; font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>👥 P2P Торговля</h2>
+
+    <button onclick="toggleForm()">➕ Создать объявление</button>
+
+    <div id="createForm" style="display: none; margin-bottom: 20px; padding: 16px; background: #2C2C2E; border-radius: 12px;">
+      <select id="adType">
+        <option value="buy">Я хочу купить</option>
+        <option value="sell">Я хочу продать</option>
+      </select>
+      <input type="text" id="crypto" placeholder="Монета (например, TON)" value="TON">
+      <input type="number" id="amount" placeholder="Количество" step="0.0001">
+      <input type="number" id="price" placeholder="Цена за 1 (USDT)" step="0.01" value="2.00">
+      <button onclick="createAd()">Опубликовать</button>
+    </div>
+
+    <h3>Активные ордеры</h3>
+    <div id="adsList"></div>
+  </div>
+
+  <script>
+    let ads = [
+      { id: 1, type: 'buy', crypto: 'TON', amount: 50, price: 1.95, user: 'User123' },
+      { id: 2, type: 'sell', crypto: 'USDT', amount: 1000, price: 2.05, user: 'Anon777' }
+    ];
+
+    function toggleForm() {
+      const form = document.getElementById('createForm');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function createAd() {
+      const type = document.getElementById('adType').value;
+      const crypto = document.getElementById('crypto').value;
+      const amount = parseFloat(document.getElementById('amount').value);
+      const price = parseFloat(document.getElementById('price').value);
+
+      if (!crypto || !amount || !price) {
+        alert('Заполните все поля');
+        return;
+      }
+
+      const newAd = {
+        id: Date.now(),
+        type,
+        crypto: crypto.toUpperCase(),
+        amount,
+        price,
+        user: 'Вы'
+      };
+
+      ads.push(newAd);
+      renderAds();
+      toggleForm();
+      document.getElementById('amount').value = '';
+      document.getElementById('price').value = '';
+    }
+
+    function renderAds() {
+      const container = document.getElementById('adsList');
+      container.innerHTML = ads.map(ad => `
+        <div class="ad ${ad.type === 'sell' ? 'sell' : ''}">
+          <div class="ad-header">
+            ${ad.type === 'buy' ? '🟢 Куплю' : '🔴 Продам'} ${ad.crypto}
+          </div>
+          <div>Количество: <b>${ad.amount}</b></div>
+          <div class="ad-price">Цена: ${ad.price} USDT</div>
+          <div>От: <i>@${ad.user}</i></div>
+          <div class="actions">
+            <button onclick="contact(${ad.id})">💬 Написать</button>
+            <button onclick="trade(${ad.id})">🤝 Сделка</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function contact(id) {
+      const ad = ads.find(a => a.id === id);
+      alert('📩 Написать пользователю @' + ad.user + '\n(в реальности — через Telegram)');
+    }
+
+    function trade(id) {
+      const ad = ads.find(a => a.id === id);
+      const total = (ad.amount * ad.price).toFixed(2);
+      const confirm = confirm('Вы уверены, что хотите купить ${ad.amount} ${ad.crypto} за ${total} USDT?');
+      if (confirm) {
+        alert('✅ Сделка начата!\nПереведите средства и подтвердите в чате.');
+        parent.updateBalance(parent.balance - total);
+      }
+    }
+
+    // Инициализация
+    renderAds();
+  </script>
+</body>
+</html>

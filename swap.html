@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Обмен</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body { font-family: -apple-system, sans-serif; background: #1C1C1E; color: #FFF; margin: 20px; }
+    .container { max-width: 500px; margin: 0 auto; }
+    select, input, button {
+      width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: none; font-size: 16px;
+    }
+    select, input { background: #2C2C2E; color: #FFF; }
+    button { background: #0A84FF; color: white; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔁 Обмен</h2>
+    <input type="number" id="fromAmount" placeholder="Сколько?" step="0.000001">
+    <select id="fromToken">
+      <option>TON</option>
+      <option selected>USDT</option>
+    </select>
+    <div style="text-align: center; margin: 10px 0;">↓</div>
+    <input type="number" id="toAmount" placeholder="Получите" readonly>
+    <select id="toToken">
+      <option selected>TON</option>
+      <option>USDT</option>
+    </select>
+    <button onclick="swap()">Обменять</button>
+  </div>
+
+  <script>
+    // Мок курсов
+    const rates = { TON: 2.0, USDT: 1.0 };
+
+    function recalculate() {
+      const from = document.getElementById('fromToken').value;
+      const to = document.getElementById('toToken').value;
+      const amount = parseFloat(document.getElementById('fromAmount').value) || 0;
+      const result = (amount * rates[from] / rates[to]).toFixed(6);
+      document.getElementById('toAmount').value = result;
+    }
+
+    document.getElementById('fromAmount').addEventListener('input', recalculate);
+    document.getElementById('fromToken').addEventListener('change', recalculate);
+    document.getElementById('toToken').addEventListener('change', recalculate);
+
+    function swap() {
+      const amount = parseFloat(document.getElementById('fromAmount').value);
+      if (!amount || amount <= 0) {
+        alert('Введите сумму');
+        return;
+      }
+
+      alert('✅ Обмен выполнен!\n(в реальности — через STON.fi)');
+      window.history.back();
+    }
+
+    recalculate();
+  </script>
+</body>
+</html>

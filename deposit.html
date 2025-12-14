@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Пополнить</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body { font-family: -apple-system, sans-serif; background: #1C1C1E; color: #FFF; margin: 20px; }
+    .container { max-width: 500px; margin: 0 auto; }
+    input, button {
+      width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: none; font-size: 16px;
+    }
+    input { background: #2C2C2E; color: #FFF; }
+    button { background: #0A84FF; color: white; font-weight: 600; }
+    .methods { display: flex; gap: 10px; margin: 20px 0; }
+    .method { background: #2C2C2E; padding: 12px; border-radius: 12px; text-align: center; flex: 1; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>➕ Пополнить баланс</h2>
+    <input type="number" id="amount" placeholder="Сумма в USDT" step="0.01">
+    
+    <div class="methods">
+      <div class="method" onclick="setMethod('TON')">TON</div>
+      <div class="method" onclick="setMethod('USDT')">USDT</div>
+      <div class="method" onclick="setMethod('BTC')">BTC</div>
+    </div>
+
+    <button onclick="deposit()">Пополнить</button>
+    <p id="result" style="margin-top: 15px; color: #30D158; opacity: 0;">✅ Успешно!</p>
+  </div>
+
+  <script>
+    let method = 'USDT';
+
+    function setMethod(m) {
+      method = m;
+      document.querySelectorAll('.method').forEach(el => el.style.border = 'none');
+      event.target.style.border = '2px solid #0A84FF';
+    }
+
+    function deposit() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      if (!amount || amount <= 0) {
+        alert('Введите сумму');
+        return;
+      }
+
+      // Мок: обновляем баланс
+      parent.updateBalance(parent.balance + amount);
+
+      // Результат
+      const result = document.getElementById('result');
+      result.style.opacity = 1;
+      setTimeout(() => window.history.back(), 1500);
+    }
+  </script>
+</body>
+</html>

@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CryptEra</title>
-  <meta name="description" content="New era of crypto in Telegram">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="manifest" href="manifest.json" />
   <style>
@@ -13,15 +12,11 @@
       --text: #FFFFFF;
       --card: #2C2C2E;
       --accent: #0A84FF;
+      --success: #30D158;
+      --danger: #FF453A;
+      --gold: #FFD700;
       --radius: 16px;
-      --font: -apple-system, 'San Francisco', 'SF Pro Text', sans-serif;
-    }
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #F2F2F7;
-        --text: #000000;
-        --card: #FFFFFF;
-      }
+      --font: -apple-system, 'San Francisco', sans-serif;
     }
     body {
       font-family: var(--font);
@@ -29,7 +24,6 @@
       color: var(--text);
       margin: 0;
       padding: 20px;
-      font-weight: 400;
     }
     .container {
       max-width: 500px;
@@ -37,27 +31,33 @@
     }
     header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
-    header h1 {
-      font-size: 28px;
-      font-weight: 600;
+    .balance {
+      background: var(--card);
+      padding: 16px;
+      border-radius: var(--radius);
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 20px;
     }
-    .card {
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .menu-item {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 16px;
+      padding: 20px 10px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
     }
-    button {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: var(--radius);
-      width: 100%;
-      font-weight: 600;
-      cursor: pointer;
+    .menu-item .icon {
+      font-size: 32px;
+      margin-bottom: 8px;
     }
   </style>
 </head>
@@ -65,20 +65,33 @@
   <div class="container">
     <header>
       <h1>🚀 CryptEra</h1>
-      <p>Новая эра крипты в Telegram</p>
     </header>
 
-    <div class="card">
-      <h2>Добро пожаловать!</h2>
-      <p>Это стартовая страница вашего Mini App.</p>
-      <button onclick="alert('Работает 🎉')">Нажми меня</button>
+    <div class="balance" id="balance">
+      💰 Баланс: 100.00 USDT
     </div>
 
-    <div class="card">
-      <h3>Что дальше?</h3>
-      <p>1. Запустите сервер</p>
-      <p>2. Откройте http://localhost:8080</p>
-      <p>3. Тестируйте в браузере</p>
+    <div class="menu-grid">
+      <a href="deposit.html" class="menu-item">
+        <div class="icon">➕</div>
+        <span>Пополнить</span>
+      </a>
+      <a href="withdraw.html" class="menu-item">
+        <div class="icon">➖</div>
+        <span>Вывести</span>
+      </a>
+      <a href="p2p.html" class="menu-item">
+        <div class="icon">👥</div>
+        <span>P2P</span>
+      </a>
+      <a href="cheques.html" class="menu-item">
+        <div class="icon">🎫</div>
+        <span>Чеки</span>
+      </a>
+      <a href="swap.html" class="menu-item">
+        <div class="icon">🔁</div>
+        <span>Обмен</span>
+      </a>
     </div>
   </div>
 
@@ -86,6 +99,18 @@
     const tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
+
+    // Мок баланс (в реальности — из API)
+    let balance = 100.0;
+
+    // Обновим баланс при открытии
+    document.getElementById('balance').innerText = '💰 Баланс: ' + balance.toFixed(2) + ' USDT';
+
+    // Глобальная функция для обновления
+    window.updateBalance = (newBalance) => {
+      balance = newBalance;
+      document.getElementById('balance').innerText = '💰 Баланс: ' + balance.toFixed(2) + ' USDT';
+    };
   </script>
 </body>
 </html>
