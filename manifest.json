@@ -1,8 +1,7 @@
 {
   "name": "CryptEra",
   "short_name": "CryptEra",
-  "description": "New era of crypto swaps, wallets, and games in Telegram",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#1C1C1E",
   "theme_color": "#0A84FF"
